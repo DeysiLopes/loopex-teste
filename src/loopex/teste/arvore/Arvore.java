@@ -1,36 +1,66 @@
 package loopex.teste.arvore;
 
-public class Arvore {
-	private Elemento raiz;
+public class Arvore<T extends Comparable> {
+	private Elemento<T> raiz;
 
     public Arvore() {
-        raiz = null;
+        this.raiz = null;
     }
 
-    public void inserir(Integer v){
-        Elemento novo = new Elemento(v);
-        novo.valor = v;
-        if(raiz == null) {
-        	raiz = novo;
-        }else {
-        	Elemento atual = raiz;
-        	Elemento anterior;
-        	while(true) {
-        		anterior = atual;
-        		if(v <= atual.valor) {
-        			atual = atual.esquerdo;
-        			if(atual == null) {
-        				anterior.esquerdo = novo;
-        				return;
-        			}
-        		}else {
-        			atual = atual.direito;
-        			if(atual == null) {
-        				anterior.direito = novo;
-        				return;
+    public void inserir(T v){
+        	Elemento<T> novo = new Elemento<T>(v);
+        	if(raiz == null) {
+        		this.raiz = novo;
+        	}else {
+        		Elemento<T> atual = this.raiz;
+        		while(true) {
+        			if(novo.getValor().compareTo(atual.getValor()) == -1) {
+        				if(atual.getEsquerdo() != null) {
+        					atual = atual.getEsquerdo();
+        				}else {
+        					atual.setEsquerdo(novo);
+        					break;
+        				}//insere a esquerda
+        			}else {
+        				if(atual.getDireito() != null) {
+        					atual = atual.getDireito();
+        				}else {
+        					atual.setDireito(novo);
+        					break;
+        				}//insere a direta
         			}
         		}
         	}
-        }      
+        }//termina inserir elemento 
+    
+    
+    public Elemento<T> getRaiz() {
+		return raiz;
+	}
+    
+    
+    public void emOrdem(Elemento<T> atual) {
+    	if(atual != null) {
+	    	emOrdem(atual.getEsquerdo());
+	    	System.out.println(atual.getValor());
+	    	emOrdem(atual.getDireito());
+    	}
     }
+    public void preOrdem(Elemento<T> atual) {
+    	if(atual != null) {
+    		System.out.println(atual.getValor());
+	    	preOrdem(atual.getEsquerdo());
+	    	preOrdem(atual.getDireito());
+    	}
+    }
+
+    public void posOrdem(Elemento<T> atual) {
+    	if(atual != null) {
+    		posOrdem(atual.getEsquerdo());
+	    	posOrdem(atual.getDireito());
+	    	System.out.println(atual.getValor());
+    	}
+    }
+
+    
 }
